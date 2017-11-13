@@ -13,6 +13,8 @@ libraryDependencies ++= Seq(
   , "org.postgresql" % "postgresql" % "42.1.4"
   , "com.typesafe.play" %% "play-slick" % "3.0.0"
   , "com.typesafe.play" %% "play-slick-evolutions" % "3.0.0"
+  , "org.apache.lucene" % "lucene-core" % "7.1.0"
+  , "org.apache.lucene" % "lucene-analyzers-common" % "7.1.0"
 )
 
 

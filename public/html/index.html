@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app"  ng-strict-di>
+    <head>
+        <title>Список задач</title>
+        <link rel="shortcut icon" type="image/png" href="assets/images/favicon.png">
+    </head>
+    <body>
+          
+      <script src="assets/javascripts/lib/angular.min.js"></script>   
+
+      <script src="assets/javascripts/app.js"></script>
+      
+      
+          
+    <div ng-controller="TaskDeskController as ctrl">
+     <h4>Список задач</h4>
+     <ul>
+       <li ng-repeat="item in ctrl.states">{{item.stateName}}</li>
+     </ul>
+     
+  <table width="60%" border=1>
+    <tr ng-if="items.length > 0">
+      <th>Num</th>
+      <th>Name</th>
+      <th>Short name</th>
+      <th>Description</th>
+      <th>Action</th>
+    </tr>
+    <tr ng-repeat="item in ctrl.desk">
+      <td>{{ $index + 1 }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.short_name }}</td>
+      <td>{{ item.description }}</td>
+      <td><button ng-click="onRemove({itemIndex: $index});">Don't want this one!</button></td>
+    </tr>
+  </table>     
+     
+    </div>
+
+    </body>
+</html>

@@ -4,9 +4,11 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           	controllers.HomeController.index
+GET     /                           	controllers.Assets.at(path="/public/html", file="index.html")
 
 POST   /tasks 					    	controllers.HomeController.createTask
+
+GET   /taskdesk                         controllers.HomeController.getTaskDesk
 
 PUT    /tasks/:id						controllers.HomeController.updateTask(id: Int)
 

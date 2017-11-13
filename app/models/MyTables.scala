@@ -1,28 +1,29 @@
 package models
 
 import slick.driver.PostgresDriver.api._
+import slick.driver.PostgresDriver
 
 object MyTables {
   
-  case class Task(id: Int, title: String, descr: String, stateID: Int)
+  case class Task(id: Option[Int] = None, title: String, descr: String, stateID: Option[Int] = None)
   
-  class Tasks(tag: Tag) extends Table[Task](tag, "TASKS") {
-    def id = column[Int]("TASK_ID", O.PrimaryKey, O.AutoInc)
-    def title = column[String]("TITLE")
-    def descr = column[String]("DESCRIPTION")
-    def stateID = column[Int]("STATE_ID")
+  class Tasks(tag: Tag) extends Table[Task](tag, "tasks") {
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    def title = column[String]("title")
+    def descr = column[String]("description")
+    def stateID = column[Int]("state_id")
     
-    def state = foreignKey("STATE_FK", stateID, states)(_.id)
+    def state = foreignKey("state_fk", stateID, states)(_.id)
     
-    def * = (id, title, descr, stateID) <> (Task.tupled, Task.unapply)
+    def * = (id.?, title, descr, stateID.?) <> (Task.tupled, Task.unapply)
   }
   
   
   case class State(id: Int, stateName: String)
   
-  class States(tag: Tag) extends Table[State](tag, "STATES") {
-    def id = column[Int]("STATE_ID", O.PrimaryKey)
-    def stateName = column[String]("STATE_NAME")
+  class States(tag: Tag) extends Table[State](tag, "states") {
+    def id = column[Int]("id", O.PrimaryKey)
+    def stateName = column[String]("name")
   
     def * = (id, stateName) <> (State.tupled, State.unapply)
   }
@@ -31,6 +32,8 @@ object MyTables {
   val states = TableQuery[States]     
   
   case class TaskDesk(id: Int, title: String, stateID: Int, stateName: String)
-  case class TaskDeskStates(desk: Seq[TaskDesk], states: Seq[State])
+  //case class TaskDeskStates(desk: Seq[TaskDesk], states: Seq[State])
+  case class TasksState(state: State, tasks: Seq[Task])
+//insert into tasks(title, description, state_id) values('второе', 'ещё одно', 1);  
 
 }
