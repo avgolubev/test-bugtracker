@@ -14,7 +14,9 @@ function TaskDeskController(TaskDeskService) {
   ctrl.task_title = "";
   ctrl.task_descr = "";
   ctrl.tasksState =[];
+  ctrl.tasks =[];
   ctrl.isExistTasks = false;
+  ctrl.phrase = "";
   
   ctrl.changeForm = function(form) {
 	  ctrl.form = form;
@@ -40,7 +42,16 @@ function TaskDeskController(TaskDeskService) {
     	  	if(ctrl.success)
     	  	  ctrl.changeForm('desk');
       });	  
-  }
+  };
+  
+  ctrl.updateTask = function(task_id, title, descr) {
+      var promise = TaskDeskService.updateTask(task_id, title, descr);
+      promise.then(function(response){
+    	  	ctrl.success = response;
+    	  	if(ctrl.success)
+    	  	  ctrl.changeForm('desk');
+      });	  
+  };  
   
   ctrl.getTaskDesk = function() {    	
       var promise = TaskDeskService.getTaskDesk();
@@ -50,6 +61,14 @@ function TaskDeskController(TaskDeskService) {
           ctrl.isExistTasks = false;
         else
           ctrl.isSearchFailed = true;
+      });
+    
+  };
+  
+  ctrl.searchTasks= function(phrase){    	
+      var promise = TaskDeskService.searchTasks(phrase);
+      promise.then(function(response){
+    	  ctrl.tasks = response;
       });
     
   };
@@ -82,6 +101,18 @@ function TaskDeskService($http) {
     return result;
   };
   
+  service.searchTasks = function(phrase) {
+	    var result = $http({
+	      method: "GET",
+	      url: "search/" + phrase
+	    })
+	    .then( function(response) {
+	      var tasks = response.data;
+	      return tasks;
+	    });
+	    return result;
+  };  
+  
   service.addTask = function(title, descr) {
 	    var result = $http({
 	      method: "POST",
@@ -98,13 +129,26 @@ function TaskDeskService($http) {
   service.changeState = function(task_id, state_id) {
 	    var result = $http({
 	      method: "PUT",
-	      url: "tasks/" + task_id + "/states/" + state_id,	      
+	      url: "tasks/" + task_id + "/states/" + state_id	      
 	    })
 	    .then( function(response) {
 	      return response.data;
 	    });
 	    return result;
-};    
+  };
+  
+  service.updateTask = function(task_id, title, descr) {
+	    var result = $http({
+	      method: "PUT",
+	      url: "tasks/" + task_id,	      
+	      headers: { 'Content-Type': 'application/json' },
+	      data: {title: title, descr: descr}	      
+	    })
+	    .then( function(response) {
+	      return response.data;
+	    });
+	    return result;
+};  
 	  
 }
 

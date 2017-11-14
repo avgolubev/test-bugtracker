@@ -32,12 +32,7 @@ class TablesDAO @Inject()(@NamedDatabase("postgres") protected val dbConfigProvi
   }
     
   def createTask(task: Task): Future[Unit] = db.run(tasks += task).map{_ => ()}
-
-  def allStates(): Future[Seq[State]] = db.run(states.sortBy(_.id).result)
-  
-  def allTasks(): Future[Seq[Task]] = db.run(tasks.sortBy(_.id).result)
-  
-  
+    
   def allTasksState(): Future[Seq[TasksState]] = for { 
     ss <- allStates()
     ts <- allTasks()      
@@ -45,8 +40,8 @@ class TablesDAO @Inject()(@NamedDatabase("postgres") protected val dbConfigProvi
     ss map{s => TasksState(s, ts.filter(t => t.stateID.get == s.id))} 
   }
   
-
+  private def allStates(): Future[Seq[State]] = db.run(states.sortBy(_.id).result)
   
- //.transactionally     
+  private def allTasks(): Future[Seq[Task]] = db.run(tasks.sortBy(_.id).result)  
   
 }

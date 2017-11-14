@@ -4,12 +4,14 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           	   controllers.Assets.at(path="/public/html", file="index.html")
+GET     /                           	controllers.Assets.at(path="/public/html", file="index.html")
 
 + nocsrf
-POST   /tasks 					    	   controllers.HomeController.createTask
+POST   /tasks 					    	controllers.HomeController.createTask
 
 GET   /taskdesk                         controllers.HomeController.getTaskDesk
+
+GET   /search/*phrase                   controllers.HomeController.searchTasks(phrase: String)
 
 + nocsrf
 PUT    /tasks/:id						controllers.HomeController.updateTask(id: Int)

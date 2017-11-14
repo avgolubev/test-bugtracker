@@ -120,7 +120,34 @@
 	                 Применить изменения
 	             </button>
 	         </div>    
-	    </div>  	    
+	    </div>
+	    
+<!--  
+Поиск задач 
+-->
+<br> <br>
+      <div ng-if="ctrl.form == 'search'">
+       <h4>Поиск задач</h4>
+           <div>
+             <input type="text" placeholder="Поисковая фраза" class="form-control" ng-model="ctrl.phrase">
+           </div>       
+           <div>          
+               <button class="btn btn-primary" ng-click="ctrl.searchTasks(ctrl.phrase);">
+                   Искать
+               </button>
+           </div>         
+<br> <br>           
+      <table ng-if="ctrl.tasks.length > 0" class=" table-hover" width="60%" border=1>
+        <tr>
+          <th> Название </th>
+          <th> Описание </th>          
+        </tr>
+        <tr ng-repeat="item in ctrl.tasks">
+          <td > {{item.title}}</td>
+          <td > {{item.descr}}</td>
+        </tr>
+      </table>     
+      </div>	      	    
 	    
 	    
     </div>    
