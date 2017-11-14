@@ -20,11 +20,11 @@ class HomeController @Inject()(tablesDAO: TablesDAO, cc: ControllerComponents)(i
                                                                                             extends AbstractController(cc) {
                                                                                             
   implicit val stateWrites  = Json.writes[State]
-  implicit val taskDeskWrites  = Json.writes[TaskDesk]
-  implicit val taskDeskStatesWrites  = Json.writes[TaskDeskStates]
+  implicit val taskDeskWrites  = Json.writes[Task]
+  implicit val taskDeskStatesWrites  = Json.writes[TasksState]
   // список задач
   def getTaskDesk = Action.async { implicit request: Request[AnyContent] =>
-    tablesDAO.getTaskDeskStates().map( tds => Ok(Json.toJson(tds)) )  
+    tablesDAO.allTasksState().map( tds => Ok(Json.toJson(tds)) )  
   }
   
   
@@ -41,9 +41,10 @@ class HomeController @Inject()(tablesDAO: TablesDAO, cc: ControllerComponents)(i
     Ok(Json.obj("success" -> true))
   }
   
-  def updateTaskState(task_id: Int, state_id: Int) = Action { implicit request: Request[AnyContent] =>
-    println(s"task id: $task_id \n state id: $state_id")
-    Ok(Json.obj("success" -> true))
+  def updateTaskState(task_id: Int, state_id: Int) = Action.async { implicit request: Request[AnyContent] =>
+    tablesDAO.changeTaskState(task_id, state_id).map {_ =>
+      Ok(Json.obj("success" -> true))
+    }
   }
   
 }

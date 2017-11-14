@@ -4,16 +4,18 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           	controllers.Assets.at(path="/public/html", file="index.html")
+GET     /                           	   controllers.Assets.at(path="/public/html", file="index.html")
 
-POST   /tasks 					    	controllers.HomeController.createTask
++ nocsrf
+POST   /tasks 					    	   controllers.HomeController.createTask
 
 GET   /taskdesk                         controllers.HomeController.getTaskDesk
 
++ nocsrf
 PUT    /tasks/:id						controllers.HomeController.updateTask(id: Int)
 
++ nocsrf
 PUT   /tasks/:task_id/states/:state_id 	controllers.HomeController.updateTaskState(task_id: Int, state_id: Int)
-GET   /tasks/:task_id/states/:state_id 	controllers.HomeController.updateTaskState(task_id: Int, state_id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

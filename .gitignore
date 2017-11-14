@@ -1,8 +1,11 @@
 logs
 target
+.DS_store
+.cache-main
 /.idea
 /.idea_modules
 /.classpath
 /.project
 /.settings
 /RUNNING_PID
+/bin/

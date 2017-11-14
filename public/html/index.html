@@ -3,6 +3,8 @@
     <head>
         <title>Список задач</title>
         <link rel="shortcut icon" type="image/png" href="assets/images/favicon.png">
+        <link rel="stylesheet" href="assets/stylesheets/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/styles.css">
     </head>
     <body>
           
@@ -10,32 +12,119 @@
 
       <script src="assets/javascripts/app.js"></script>
       
-      
+    <div class="container" ng-controller="TaskDeskController as ctrl">
           
-    <div ng-controller="TaskDeskController as ctrl">
-     <h4>Список задач</h4>
-     <ul>
-       <li ng-repeat="item in ctrl.states">{{item.stateName}}</li>
-     </ul>
+     <div ng-if="ctrl.form != 'create'" class="form-group narrow-button">
+         <button class="btn btn-primary" ng-click="ctrl.changeForm('create');">
+             Создать задачу
+         </button>
+     </div>           
+      
+     <div ng-if="ctrl.form != 'desk'" class="form-group narrow-button">
+         <button class="btn btn-primary" ng-click="ctrl.changeForm('desk');">
+             Список задач
+         </button>
+     </div>   
      
-  <table width="60%" border=1>
-    <tr ng-if="items.length > 0">
-      <th>Num</th>
-      <th>Name</th>
-      <th>Short name</th>
-      <th>Description</th>
-      <th>Action</th>
-    </tr>
-    <tr ng-repeat="item in ctrl.desk">
-      <td>{{ $index + 1 }}</td>
-      <td>{{ item.name }}</td>
-      <td>{{ item.short_name }}</td>
-      <td>{{ item.description }}</td>
-      <td><button ng-click="onRemove({itemIndex: $index});">Don't want this one!</button></td>
-    </tr>
-  </table>     
-     
-    </div>
+     <div ng-if="ctrl.form != 'search'" class="form-group narrow-button">
+         <button class="btn btn-primary" ng-click="ctrl.changeForm('search');">
+            Поиск
+         </button>
+     </div>                 
+
+<!--  
+Обзор всех задач 
+-->
+<br> <br>
+	    <div ng-if="ctrl.form == 'desk'">
+	     <h4>Список задач</h4>
+	     
+		  <table class=" table-hover" width="60%" border=1>
+		    <tr ng-if="ctrl.tasksState.length > 0">
+		      <th ng-repeat="item in ctrl.tasksState"> {{item.state.stateName}} </th>
+		    </tr>
+		    <tr ng-if="ctrl.tasksState.length > 0">
+		      <td ng-repeat="item in ctrl.tasksState"> 
+		      	<p ng-repeat="task in item.tasks"> <a href="#" ng-click="ctrl.setCurrent(task, item); ctrl.changeForm('view');"> {{task.title}} </a> </p>
+		      </td>
+		    </tr>
+		  </table>     
+	    </div>
+
+<!--  
+Новая задача
+-->
+<br> <br>
+	    <div ng-if="ctrl.form == 'create'"  class="form">
+
+		     <h4>Новая задача</h4>
+
+		     <div>
+		         <input type="text" placeholder="Название" class="form-control" ng-model="ctrl.task_title">
+	         </div>
+	         <div>		         
+		         <input type="text" placeholder="Описание" class="form-control" ng-model="ctrl.task_descr">
+	         </div>
+	         <div>		      
+	             <button class="btn btn-primary" ng-click="ctrl.addTask(ctrl.task_title, ctrl.task_descr);">
+	                 Создать
+	             </button>
+	         </div>    
+	    </div>  
+	    
+	   
+    
+<!--  
+Карточка задачи
+-->
+<br> <br>
+	    <div ng-if="ctrl.form == 'view'"  class="form">
+
+		     <h4>Карточка задачи</h4>
+
+		         <input type="text" placeholder="Название" class="form-control" ng-model="ctrl.task_title" readonly>
+
+
+		         <input type="text" placeholder="Описание" class="form-control" ng-model="ctrl.task_descr" readonly>
+		  
+	  
+			  <lable>Статус:
+    				<select  ng-model="ctrl.curState" ng-options="item.state.stateName for item in ctrl.tasksState""></select>
+	             <button ng-click="ctrl.changeState(ctrl.task_id, ctrl.curState.state.id);">
+	                 Поменять статус
+	             </button>     				
+  			  </lable>
+  		           <br><br>   
+	             <button class="btn btn-primary" ng-click="ctrl.changeForm('edit');">
+	                 Редактировать
+	             </button>   
+	    </div>  
+	    
+	    
+<!--  
+Редактировать задачу
+-->
+<br> <br>
+	    <div ng-if="ctrl.form == 'edit'"  class="form">
+
+		     <h4>Редактирование задачи</h4>
+
+		     <div>
+		         <input type="text" placeholder="Название" class="form-control" ng-model="ctrl.task_title">
+	         </div>
+	         <div>		         
+		         <input type="text" placeholder="Описание" class="form-control" ng-model="ctrl.task_descr">
+	         </div>
+	         <div>		      
+	             <button class="btn btn-primary" ng-click="ctrl.updateTask(ctrl.task_id, ctrl.task_title, ctrl.task_descr);">
+	                 Применить изменения
+	             </button>
+	         </div>    
+	    </div>  	    
+	    
+	    
+    </div>    
 
     </body>
 </html>
+

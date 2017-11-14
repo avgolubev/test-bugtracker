@@ -32,30 +32,18 @@ class TablesDAO @Inject()(@NamedDatabase("postgres") protected val dbConfigProvi
   }
     
   def createTask(task: Task): Future[Unit] = db.run(tasks += task).map{_ => ()}
+
+  def allStates(): Future[Seq[State]] = db.run(states.sortBy(_.id).result)
   
-  def getTaskDeskStates(): Future[Seq[TasksState]] = for {
+  def allTasks(): Future[Seq[Task]] = db.run(tasks.sortBy(_.id).result)
+  
+  
+  def allTasksState(): Future[Seq[TasksState]] = for { 
     ss <- allStates()
-    res <- tasksByState(s.id)    
-  } yield res
-  
-  def allStates(): Future[Seq[State]] = db.run(states.result)
-  
-  def do1() = {
-    for{
-      s   <- states
-      res <- tasks      
-    } yield TasksState(s, res)
-           
+    ts <- allTasks()      
+  } yield {
+    ss map{s => TasksState(s, ts.filter(t => t.stateID.get == s.id))} 
   }
-  
-  def tasksByState(stateID: Int): Future[Seq[Task]] = for {
-    s <- db.run(
-          (for {
-            t <- tasks if t.stateID === stateID
-           } yield (t.id.?, t.title, t.descr, t.stateID.?)
-          ).result)
-  } yield (s map Task.tupled)
-  
   
 
   
