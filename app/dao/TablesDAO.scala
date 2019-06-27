@@ -11,7 +11,7 @@ import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 import slick.driver.PostgresDriver.api._
 
-import models.MyTables._
+import model.MyTables._
 
 class TablesDAO @Inject()(@NamedDatabase("postgres") protected val dbConfigProvider: DatabaseConfigProvider)
 						(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {

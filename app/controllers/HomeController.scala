@@ -11,7 +11,7 @@ import play.api.libs.functional.syntax._
 
 import scala.concurrent.ExecutionContext
 
-import models.MyTables._
+import model.MyTables._
 import dao.TablesDAO
 import dao.LuceneSearch.indexDocs
 import dao.LuceneSearch.searchDescr

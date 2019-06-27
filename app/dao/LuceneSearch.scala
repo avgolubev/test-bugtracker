@@ -7,8 +7,8 @@ import org.apache.lucene.store.RAMDirectory
 import org.apache.lucene.search.{Query, IndexSearcher}
 import org.apache.lucene.queryparser.classic.QueryParser
 
-import models.MyTables.Task
-import models.MyTables.TasksState
+import model.MyTables.Task
+import model.MyTables.TasksState
 
 object LuceneSearch {
   
